@@ -1,10 +1,7 @@
 import { useMutation, type UseMutationResult } from "@tanstack/react-query";
 import { userApi } from "../lib/api";
-import type {
-  RegisterPayload,
-  RegisterResponse,
-  ApiError,
-} from "../types/auth";
+import type { RegisterPayload, RegisterResponse } from "../types/auth";
+import type { ApiError } from "../types/error";
 
 interface UseRegisterOptions {
   onSuccess?: (data: RegisterResponse) => void;
@@ -37,7 +34,4 @@ export const useRegister = (
   });
 };
 
-/**
- * Hook return type helper for consumers
- */
 export type UseRegisterReturn = ReturnType<typeof useRegister>;

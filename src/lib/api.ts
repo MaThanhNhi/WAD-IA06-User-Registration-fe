@@ -4,8 +4,8 @@ import type {
   RegisterResponse,
   LoginPayload,
   LoginResponse,
-  ApiError,
 } from "../types/auth";
+import type { ApiError } from "../types/error";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
@@ -19,7 +19,28 @@ export const apiClient = axios.create({
 });
 
 // TODO: Request Interceptor - Implement when authentication is required (automatically adds JWT token to protected endpoints)
-// TODO: Response Interceptor - Implement when protected endpoints exist (handles authentication errors and formats API errors)
+
+// Response Interceptor - Format API errors to match ApiError interface
+apiClient.interceptors.response.use(
+  (response) => response, // Pass through successful responses
+  (error) => {
+    if (error.response?.data) {
+      const apiError: ApiError = {
+        message: error.response.data.message || "An unexpected error occurred",
+        error: error.response.data.error,
+        statusCode: error.response.data.statusCode || error.response.status,
+      };
+      return Promise.reject(apiError);
+    }
+
+    // Network error or timeout
+    const networkError: ApiError = {
+      message: error.message || "Network error occurred",
+      statusCode: 0,
+    };
+    return Promise.reject(networkError);
+  },
+);
 
 export const userApi = {
   register: async (data: RegisterPayload): Promise<RegisterResponse> => {

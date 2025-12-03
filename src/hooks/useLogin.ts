@@ -1,6 +1,7 @@
 import { useMutation, type UseMutationResult } from "@tanstack/react-query";
 import { userApi } from "../lib/api";
-import type { LoginPayload, LoginResponse, ApiError } from "../types/auth";
+import type { LoginPayload, LoginResponse } from "../types/auth";
+import type { ApiError } from "../types/error";
 
 interface UseLoginOptions {
   onSuccess?: (data: LoginResponse) => void;
@@ -15,13 +16,11 @@ export const useLogin = (
     mutationFn: (data: LoginPayload) => userApi.login(data),
 
     onSuccess: (data) => {
-      console.log("✅ Login successful:", data);
       // TODO: Store token if provided
       options?.onSuccess?.(data);
     },
 
     onError: (error) => {
-      console.error("❌ Login failed:", error);
       options?.onError?.(error);
     },
 
@@ -34,7 +33,4 @@ export const useLogin = (
   });
 };
 
-/**
- * Hook return type helper
- */
 export type UseLoginReturn = ReturnType<typeof useLogin>;

@@ -28,24 +28,3 @@ export interface LoginResponse {
   user: User;
   token?: string;
 }
-
-// ==================== Error Types ====================
-
-export interface ApiError {
-  message: string;
-  error?: string;
-  statusCode?: number;
-}
-
-export interface ValidationError {
-  field: string;
-  message: string;
-}
-
-// ==================== API State Types ====================
-
-export interface AuthState {
-  user: User | null;
-  isAuthenticated: boolean;
-  token: string | null;
-}
