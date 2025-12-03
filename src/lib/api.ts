@@ -15,6 +15,7 @@ export const apiClient = axios.create({
     "Content-Type": "application/json",
   },
   timeout: 10000, // 10 seconds timeout
+  // withCredentials: true, // no auth yet
 });
 
 // TODO: Request Interceptor - Implement when authentication is required (automatically adds JWT token to protected endpoints)
